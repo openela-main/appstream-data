@@ -1,11 +1,11 @@
-%define gitdate 20220302
+%define gitdate 20230504
 %global enable_epel 1
 
 Summary:   Cached AppStream metadata
 Name:      appstream-data
 Epoch:     1
 Version:   9
-Release:   %{gitdate}%{?dist}.1
+Release:   %{gitdate}%{?dist}
 BuildArch: noarch
 License:   CC0 and CC-BY and CC-BY-SA and GFDL
 URL:       http://people.redhat.com/rhughes/metadata/
@@ -24,11 +24,13 @@ Source10:  http://people.redhat.com/rhughes/metadata/epel-%{version}-%{gitdate}-
 %endif
 
 # This is built using:
+# sudo dnf makecache --enablerepo rhel-9-baseos --enablerepo rhel-9-appstream --enablerepo rhel-9-crb
 # export ARCHIVE_PATH=/run/media/hughsie/Backup/mirror
 # dnf reposync --setopt=*.module_hotfixes=1 --repo rhel-9-baseos -p ${ARCHIVE_PATH}/RHEL/ &> rhel-9-baseos.log
 # dnf reposync --setopt=*.module_hotfixes=1 --repo rhel-9-appstream -p ${ARCHIVE_PATH}/RHEL/ &> rhel-9-appstream.log
 # dnf reposync --setopt=*.module_hotfixes=1 --repo rhel-9-crb -p ${ARCHIVE_PATH}/RHEL/ &> rhel-9-crb.log
 # https://github.com/hughsie/appstream-scripts/blob/master/rhel/rhel-9-candidate.sh
+# then the sources need to be uploaded to people.redhat.com/rhughes/metadata/
 
 BuildRequires: libappstream-glib
 
@@ -62,9 +64,17 @@ DESTDIR=%{buildroot} appstream-util install \
 %dir %{_datadir}/app-info/xmls
 
 %changelog
+* Thu May 04 2023 Richard Hughes <richard@hughsie.com> 1:9-20230504
+- New metadata version
+- Resolves: rhbz#2062807
+
+* Wed Apr 26 2023 Richard Hughes <richard@hughsie.com> 1:9-20230426
+- New metadata version
+- Resolves: rhbz#2062807
+
 * Thu Mar 03 2022 Richard Hughes <richard@hughsie.com> 1:9-20220302
 - New metadata version
-- Resolves: rhbz#1994416
+- Resolves: rhbz#2062807
 
 * Mon Nov 01 2021 Richard Hughes <richard@hughsie.com> 1:9-20211101
 - New metadata version

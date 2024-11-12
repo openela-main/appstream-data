@@ -1,4 +1,4 @@
-%define gitdate 20230504
+%define gitdate 20240827
 %global enable_epel 1
 
 Summary:   Cached AppStream metadata
@@ -8,14 +8,12 @@ Version:   9
 Release:   %{gitdate}%{?dist}
 BuildArch: noarch
 License:   CC0 and CC-BY and CC-BY-SA and GFDL
-URL:       http://people.redhat.com/rhughes/metadata/
-Source1:   http://people.redhat.com/rhughes/metadata/rhel-%{version}-%{gitdate}.xml.gz
-Source2:   http://people.redhat.com/rhughes/metadata/rhel-%{version}-%{gitdate}-icons.tar.gz
+URL:       https://people.redhat.com/rhughes/metadata/
+Source1:   https://people.redhat.com/rhughes/metadata/rhel-%{version}-%{gitdate}.xml.gz
+Source2:   https://people.redhat.com/rhughes/metadata/rhel-%{version}-%{gitdate}-icons.tar.gz
 Source3:   https://raw.githubusercontent.com/hughsie/fedora-appstream/master/appstream-extra/adobe-flash.xml
 Source4:   https://raw.githubusercontent.com/hughsie/fedora-appstream/master/appstream-extra/gstreamer-non-free.xml
 Source5:   https://raw.githubusercontent.com/hughsie/fedora-appstream/master/appstream-extra/other-repos.xml
-Source6:   https://raw.githubusercontent.com/hughsie/fedora-appstream/master/appstream-extra/fedora-categories.xml
-Source7:   https://raw.githubusercontent.com/hughsie/fedora-appstream/master/appstream-extra/fedora-popular.xml
 
 # extra applications not in RHEL
 %if 0%{?enable_epel}
@@ -25,10 +23,10 @@ Source10:  http://people.redhat.com/rhughes/metadata/epel-%{version}-%{gitdate}-
 
 # This is built using:
 # sudo dnf makecache --enablerepo rhel-9-baseos --enablerepo rhel-9-appstream --enablerepo rhel-9-crb
-# export ARCHIVE_PATH=/run/media/hughsie/Backup/mirror
-# dnf reposync --setopt=*.module_hotfixes=1 --repo rhel-9-baseos -p ${ARCHIVE_PATH}/RHEL/ &> rhel-9-baseos.log
-# dnf reposync --setopt=*.module_hotfixes=1 --repo rhel-9-appstream -p ${ARCHIVE_PATH}/RHEL/ &> rhel-9-appstream.log
-# dnf reposync --setopt=*.module_hotfixes=1 --repo rhel-9-crb -p ${ARCHIVE_PATH}/RHEL/ &> rhel-9-crb.log
+# export ARCHIVE_PATH=/media
+# dnf reposync --setopt=*.module_hotfixes=1 --repo rhel-9-baseos -p ${ARCHIVE_PATH}/rhel/ &> rhel-9-baseos.log
+# dnf reposync --setopt=*.module_hotfixes=1 --repo rhel-9-appstream -p ${ARCHIVE_PATH}/rhel/ &> rhel-9-appstream.log
+# dnf reposync --setopt=*.module_hotfixes=1 --repo rhel-9-crb -p ${ARCHIVE_PATH}/rhel/ &> rhel-9-crb.log
 # https://github.com/hughsie/appstream-scripts/blob/master/rhel/rhel-9-candidate.sh
 # then the sources need to be uploaded to people.redhat.com/rhughes/metadata/
 
@@ -45,7 +43,7 @@ DESTDIR=%{buildroot} appstream-util install-origin rhel-%{version} %{SOURCE1} %{
 DESTDIR=%{buildroot} appstream-util install-origin epel-%{version} %{SOURCE9} %{SOURCE10}
 %endif
 DESTDIR=%{buildroot} appstream-util install \
-	%{SOURCE3} %{SOURCE4} %{SOURCE5} %{SOURCE6} %{SOURCE7}
+	%{SOURCE3} %{SOURCE4} %{SOURCE5}
 
 %files
 %attr(0644,root,root) %{_datadir}/app-info/xmls/*
@@ -64,6 +62,12 @@ DESTDIR=%{buildroot} appstream-util install \
 %dir %{_datadir}/app-info/xmls
 
 %changelog
+* Tue Aug 27 2024 Richard Hughes <richard@hughsie.com> 1:9-20240827
+- New metadata version
+- Do not ship fedora-specific files
+- Resolves: #RHEL-4522
+- Resolves: #RHEL-19012
+
 * Thu May 04 2023 Richard Hughes <richard@hughsie.com> 1:9-20230504
 - New metadata version
 - Resolves: rhbz#2062807
